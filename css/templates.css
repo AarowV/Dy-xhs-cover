@@ -1,0 +1,524 @@
+/*
+  封面模板的样子。
+  ----------------------------------------------------------------
+  每个模板在 js/templates.js 里有一个 id。
+  画布会带上 class： tpl-这个id   以及   size-xhs（1080×1440）或 size-dy（1080×1920）
+
+  可用的 CSS 变量（改颜色不用改这里，用户选色时会自动变）：
+    --bg         背景色
+    --fg         文字色
+    --accent     强调色（高亮、色块、便利贴）
+    --on-accent  放在强调色上面时，自动选黑或白
+    --photo-dim  背景图变暗的程度，0 到 0.7
+    --line       横线纸的线色
+
+  常用零件：
+    .photo   用户上传的图，铺满某一块
+    .dim     把那张图变暗
+    .kw      标题里被高亮的词
+    [data-fit]  字太多时由 app.js 自动缩小，记得同时写 max-height 和 overflow: hidden
+
+  想加新模板：复制一份 .tpl-xxx 规则，选择器换成你的 id。
+  文件最底下有一段注释掉的「纯色居中」例子。
+*/
+
+/* 尺寸必须落在画布自己身上。模板根元素不要再写 height，
+   否则会把 1440 / 1920 盖掉，预览和导出都会缩成一条。 */
+.artboard {
+  width: 1080px !important;
+  height: 1440px !important;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: "KuaiLe", "PingFang SC", "Microsoft YaHei", "Noto Sans SC", "WenQuanYi Micro Hei", sans-serif;
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  line-break: strict;
+}
+
+.artboard.size-dy { height: 1920px !important; }
+
+.artboard h1,
+.artboard p { margin: 0; font-weight: 400; }
+
+.ghost { opacity: 0.28; }
+
+/* 角标在 foreignObject 导出里会被收成一个字宽，强制一行。 */
+.artboard .tag {
+  white-space: nowrap;
+  width: max-content;
+  max-width: 80%;
+}
+
+.tag:empty,
+.stamp:empty,
+.sub:empty,
+.sticky:has(.sub:empty),
+.dock:has(.sub:empty) { display: none !important; }
+
+.photo {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+}
+
+.dim {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: var(--photo-dim, 0);
+  z-index: 1;
+}
+
+/* ---------- 1. 荧光大字 ---------- */
+
+.tpl-marker {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 84px 80px 96px;
+}
+
+.tpl-marker .fade {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 8%, var(--bg) 74%);
+}
+
+.tpl-marker.no-photo .fade { display: none; }
+
+.tpl-marker .tag {
+  position: absolute;
+  z-index: 3;
+  top: 72px;
+  left: 80px;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-size: 36px;
+  line-height: 1;
+  padding: 14px 22px 12px;
+  border-radius: 999px;
+}
+
+.tpl-marker .stack {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.tpl-marker .title {
+  font-family: "QingKe", sans-serif;
+  font-size: 132px;
+  line-height: 1.12;
+  max-width: 100%;
+  max-height: 760px;
+  overflow: hidden;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.tpl-marker.size-dy .title { max-height: 1000px; }
+
+/* 关键词铺一层强调色，像荧光笔。box-decoration-break 让换行后每一截都有底色。 */
+.tpl-marker .kw {
+  background: var(--accent);
+  color: var(--on-accent);
+  padding: 0 0.08em 0.02em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.tpl-marker .bar {
+  width: 88px;
+  height: 12px;
+  border-radius: 99px;
+  background: var(--fg);
+  margin: 36px 0 26px;
+}
+
+.tpl-marker .sub {
+  max-width: 860px;
+  font-size: 36px;
+  line-height: 1.45;
+  max-height: 180px;
+  overflow: hidden;
+  white-space: pre-wrap;
+}
+
+/* ---------- 2. 手账便签 ---------- */
+
+.tpl-note {
+  display: flex;
+  flex-direction: column;
+  padding: 176px 72px 88px 148px;
+  background-color: var(--bg);
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0 71px,
+    var(--line) 71px 72px
+  );
+  background-position: 0 22px;
+}
+
+.tpl-note .redline {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  bottom: 0;
+  left: 112px;
+  width: 2px;
+  background: #e25b5b;
+}
+
+.tpl-note .tape {
+  position: absolute;
+  z-index: 4;
+  top: 28px;
+  left: 50%;
+  width: 230px;
+  height: 52px;
+  transform: translateX(-50%) rotate(-2deg);
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(255, 158, 158, 0.82) 0 14px,
+    rgba(255, 226, 226, 0.9) 14px 26px
+  );
+  box-shadow: 0 8px 14px rgba(80, 40, 20, 0.1);
+}
+
+.tpl-note .hole {
+  position: absolute;
+  z-index: 3;
+  left: 36px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.14);
+}
+
+.tpl-note .hole:nth-child(1) { top: 18%; }
+.tpl-note .hole:nth-child(2) { top: 47%; }
+.tpl-note .hole:nth-child(3) { top: 76%; }
+
+.tpl-note .stamp {
+  position: absolute;
+  z-index: 4;
+  top: 168px;
+  right: 64px;
+  width: 168px;
+  height: 168px;
+  border-radius: 50%;
+  border: 8px solid #d24b40;
+  color: #d24b40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 18px;
+  font-size: 36px;
+  line-height: 1.15;
+  letter-spacing: 0.08em;
+  transform: rotate(12deg);
+  background: rgba(255, 255, 255, 0.18);
+  max-height: 168px;
+  overflow: hidden;
+}
+
+.tpl-note .title {
+  position: relative;
+  z-index: 3;
+  margin-right: 180px;
+  font-family: "MaShan", cursive;
+  font-size: 104px;
+  line-height: 1.28;
+  max-height: 520px;
+  overflow: hidden;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.tpl-note.size-dy .title { max-height: 700px; }
+
+.tpl-note.no-tag .title { margin-right: 0; }
+
+/* 红笔划在字下面。便利贴用强调色，红笔保持模板自己的颜色。 */
+.tpl-note .kw {
+  border-bottom: 0.12em solid #e2534a;
+  padding-bottom: 0.02em;
+}
+
+.tpl-note .tail {
+  position: relative;
+  z-index: 3;
+  margin-top: auto;
+  display: flex;
+  align-items: flex-end;
+  gap: 28px;
+  padding-top: 36px;
+}
+
+.tpl-note .sticky {
+  position: relative;
+  width: min(680px, 100%);
+  background: var(--accent);
+  color: var(--on-accent);
+  transform: rotate(-1.8deg);
+  box-shadow: 0 14px 28px rgba(60, 40, 20, 0.14);
+  padding: 36px 36px 40px;
+}
+
+.tpl-note.has-image .sticky {
+  width: auto;
+  flex: 1;
+  min-width: 0;
+}
+
+.tpl-note .fold {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(225deg, var(--bg) 50%, rgba(0, 0, 0, 0.08) 50%);
+}
+
+.tpl-note .sub {
+  font-size: 40px;
+  line-height: 1.4;
+  max-height: 220px;
+  overflow: hidden;
+  white-space: pre-wrap;
+}
+
+.tpl-note .polaroid {
+  flex: none;
+  width: 300px;
+  background: white;
+  padding: 14px 14px 52px;
+  transform: rotate(3.5deg);
+  box-shadow: 0 16px 30px rgba(40, 30, 10, 0.16);
+}
+
+.tpl-note .polaroid .shot {
+  height: 250px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.tpl-note .polaroid .shot .dim {
+  opacity: var(--photo-dim, 0);
+}
+
+/* ---------- 3. 黑黄冲击 ---------- */
+
+.tpl-impact { background: var(--bg); color: var(--fg); }
+
+.tpl-impact .frame {
+  position: absolute;
+  z-index: 2;
+  inset: 44px;
+  border: 18px solid var(--accent);
+  pointer-events: none;
+}
+
+.tpl-impact .watermark {
+  position: absolute;
+  z-index: 1;
+  right: 160px;
+  bottom: 250px;
+  font-family: "QingKe", sans-serif;
+  font-size: 260px;
+  line-height: 1;
+  color: var(--accent);
+  opacity: 0.18;
+  pointer-events: none;
+}
+
+.tpl-impact .tag {
+  position: absolute;
+  z-index: 4;
+  top: 22px;
+  left: 78px;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-size: 40px;
+  line-height: 1;
+  padding: 14px 22px 12px;
+}
+
+.tpl-impact .inner {
+  position: relative;
+  z-index: 3;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 150px 96px 108px;
+}
+
+.tpl-impact .title {
+  margin-top: 28px;
+  font-family: "QingKe", sans-serif;
+  font-size: 136px;
+  line-height: 1.08;
+  color: var(--fg);
+  max-width: 100%;
+  min-width: 0;
+  max-height: 780px;
+  overflow: hidden;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.tpl-impact.size-dy .title {
+  margin-top: 96px;
+  max-height: 980px;
+}
+
+.tpl-impact .kw {
+  background: var(--accent);
+  color: var(--on-accent);
+  padding: 0 0.06em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.tpl-impact .dock {
+  margin-top: auto;
+  background: var(--accent);
+  color: var(--on-accent);
+  padding: 28px 34px;
+}
+
+.tpl-impact .sub {
+  font-size: 38px;
+  line-height: 1.4;
+  max-height: 170px;
+  overflow: hidden;
+  white-space: pre-wrap;
+}
+
+/* ---------- 4. 杂志色块 ---------- */
+
+.tpl-mag {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--fg);
+}
+
+.tpl-mag .band {
+  position: relative;
+  flex: 0 0 46%;
+  background: var(--accent);
+  overflow: hidden;
+}
+
+.tpl-mag.size-dy .band { flex-basis: 40%; }
+
+.tpl-mag .tag {
+  position: absolute;
+  z-index: 2;
+  left: 64px;
+  bottom: 40px;
+  background: var(--bg);
+  color: var(--fg);
+  font-size: 32px;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  padding: 14px 18px 12px;
+}
+
+.tpl-mag .body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 52px 72px 60px;
+}
+
+.tpl-mag .kicker {
+  margin: 0 0 18px;
+  font-size: 30px;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+}
+
+.tpl-mag .title {
+  font-family: "XiaoWei", serif;
+  font-size: 112px;
+  line-height: 1.18;
+  max-height: 500px;
+  overflow: hidden;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.tpl-mag.size-dy .title { max-height: 760px; }
+
+.tpl-mag .kw { color: var(--accent); }
+
+.tpl-mag .rule {
+  height: 2px;
+  margin-top: auto;
+  margin-bottom: 28px;
+  background: var(--fg);
+  opacity: 0.22;
+}
+
+.tpl-mag .tail {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 28px;
+}
+
+.tpl-mag .sub {
+  flex: 1;
+  font-size: 34px;
+  line-height: 1.45;
+  max-height: 160px;
+  overflow: hidden;
+  white-space: pre-wrap;
+}
+
+.tpl-mag .no {
+  flex: none;
+  font-family: "XiaoWei", serif;
+  font-size: 84px;
+  line-height: 0.8;
+  color: var(--accent);
+}
+
+/*
+  ---------- 例子：纯色居中（默认不启用）----------
+  和 js/templates.js 底部那一段一起取消注释，刷新就能看到。
+
+.tpl-plain {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 80px;
+  text-align: center;
+}
+.tpl-plain .title {
+  font-family: "QingKe", sans-serif;
+  font-size: 140px;
+  line-height: 1.12;
+  max-height: 80%;
+  overflow: hidden;
+  white-space: pre-wrap;
+}
+.tpl-plain .kw {
+  background: var(--accent);
+  color: var(--on-accent);
+  padding: 0 0.06em;
+}
+*/
