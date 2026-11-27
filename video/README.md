@@ -1,23 +1,22 @@
-# 高性价比人生指南 · Remotion 视频
+# 高性价比人生指南 · Remotion（白起做法）
 
-全程用代码制作竖屏短视频与音效动画。
+复刻抖音「白起」历史纪录片的制作方法：
+
+- 横屏 16:9（1920×1080）
+- 平面剪影 + 卷轴 / 朱印 / 计数器 / 文献脚注
+- 宋体叙事字幕，关键词朱红
+- 结尾 A/B 选择题
+- 旁白 + whoosh/ding 音效全代码驱动
 
 ## 第一集：不要早死
-
-- Composition：`Episode01-DontDieEarly`
-- 尺寸：1080×1920（抖音竖屏）
-- 旁白：`public/voiceover/ep01/*.mp3`（edge-tts 生成）
-- 音效：Remotion 公共库 `whoosh` / `ding`
-- 剧本：`SCRIPT_EP01.md`
-- 署名：`ATTRIBUTION.md`
 
 ```bash
 npm install
 npm run voiceover:ep01
 npm run dev
+# http://localhost:3000/Episode01-DontDieEarly
 npm run render:ep01
 ```
 
-Studio 打开后访问：
-
-http://localhost:3000/Episode01-DontDieEarly
+剧本：`SCRIPT_EP01.md`  
+署名：`ATTRIBUTION.md`

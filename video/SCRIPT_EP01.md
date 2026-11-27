@@ -1,35 +1,26 @@
-# 第一集剧本 · 不要早死
+# 第一集剧本 · 不要早死（白起做法复刻）
 
-竖屏短视频（1080×1920），旁白由代码生成（edge-tts），画面与音效全部由 Remotion 代码驱动。
+横屏 1920×1080。叙事节奏参考抖音「白起」历史纪录片做法：
 
-素材来源：[eternity4719/HowToLiveBetter](https://github.com/eternity4719/HowToLiveBetter) 第 1 节「不要早死」，许可 CC BY 4.0。
+- 无真人出镜，平面剪影人物
+- 宋体字幕 + 关键词朱红强调
+- 卷轴揭示 / 朱印落章 / 右上角计数器
+- 底部小字文献出处
+- 右下角水印常驻
+- 结尾 A/B 选择题引导评论
 
 ## 分镜
 
-| # | 场景 | 旁白要点 | 音效 |
+| # | 场景 | 手法 | 旁白要点 |
 | --- | --- | --- | --- |
-| 01 | Hook | 几乎不花钱，就能明显降低早死概率 | whoosh |
-| 02 | 片头 | 高性价比人生指南 · 第一集 | whoosh |
-| 03 | 用法 | 备选单不是任务清单；四种资源 | whoosh |
-| 04 | 条目 1 | 系安全带 · ↓45% · 证据 A | whoosh + ding |
-| 05 | 条目 2 | 戴头盔并扣好 · ↓42% · 证据 A | whoosh + ding |
-| 06 | 条目 3 | 烟雾报警器 · ↓60% · 证据 B | whoosh + ding |
-| 07 | 条目 4 | 电动车别进楼道充电 | whoosh + ding |
-| 08 | 条目 5 | 量血压并达标 · ↓13% · 证据 A | whoosh + ding |
-| 09 | 片尾 | 署名 + 下集「不要慢慢死」 | whoosh |
+| 01 | Hook | 宫门剪影 + 大字 | 几乎不花钱，压早死概率 |
+| 02 | Title | 卷轴展开 | 高性价比人生指南 · 不要早死 |
+| 03 | Method | 四资源卡 | 花掉什么 / 换回什么 |
+| 04 | Seatbelt | 计数器 + 证据印 | ↓45% · NHTSA |
+| 05 | Helmet | 图标 + 风险条 | ↓42% · Cochrane |
+| 06 | Smoke | 报警器脉冲 | ↓60% · JAMA |
+| 07 | Ebike | 楼梯隐喻 + 禁印 | 禁入楼道 |
+| 08 | BP | 天平隐喻 | 高压−10 → 死亡−13% |
+| 09 | Choice | 双按钮 | 做 / 再等等 |
 
-## 本地预览 / 导出
-
-```bash
-cd video
-npm run dev
-# Studio: http://localhost:3000/Episode01-DontDieEarly
-
-npx remotion render Episode01-DontDieEarly out/ep01.mp4
-```
-
-重新生成旁白：
-
-```bash
-python3 scripts/generate-voiceover-ep01.py
-```
+素材：eternity4719/HowToLiveBetter 第 1 节，CC BY 4.0。

@@ -11,16 +11,20 @@ import {
 } from "remotion";
 import { EP01_SCENES, type SceneData } from "./script";
 import {
-  FrameworkScene,
+  BpScene,
+  ChoiceScene,
+  EbikeScene,
+  HelmetScene,
   HookScene,
-  OutroScene,
+  MethodScene,
+  SeatbeltScene,
+  SmokeScene,
   TitleScene,
-} from "./scenes/TextScenes";
-import { TipScene } from "./scenes/TipScene";
+} from "./scenes/Scenes";
 import { FPS, HEIGHT, WIDTH } from "./theme";
 
-const TRANSITION_FRAMES = 12;
-const TAIL_PADDING_FRAMES = 10;
+const TRANSITION_FRAMES = 14;
+const TAIL_PADDING_FRAMES = 12;
 
 export type Episode01Props = {
   sceneDurations: number[];
@@ -32,12 +36,20 @@ const renderScene = (scene: SceneData) => {
       return <HookScene data={scene} />;
     case "title":
       return <TitleScene data={scene} />;
-    case "framework":
-      return <FrameworkScene data={scene} />;
-    case "outro":
-      return <OutroScene data={scene} />;
-    case "tip":
-      return <TipScene data={scene} />;
+    case "method":
+      return <MethodScene data={scene} />;
+    case "seatbelt":
+      return <SeatbeltScene data={scene} />;
+    case "helmet":
+      return <HelmetScene data={scene} />;
+    case "smoke":
+      return <SmokeScene data={scene} />;
+    case "ebike":
+      return <EbikeScene data={scene} />;
+    case "bp":
+      return <BpScene data={scene} />;
+    case "choice":
+      return <ChoiceScene data={scene} />;
     default:
       return null;
   }
@@ -59,11 +71,9 @@ export const calculateEpisode01Metadata: CalculateMetadataFunction<
   const transitionOverlap =
     Math.max(0, EP01_SCENES.length - 1) * TRANSITION_FRAMES;
 
-  const durationInFrames =
-    sceneDurations.reduce((sum, n) => sum + n, 0) - transitionOverlap;
-
   return {
-    durationInFrames,
+    durationInFrames:
+      sceneDurations.reduce((sum, n) => sum + n, 0) - transitionOverlap,
     fps: FPS,
     width: WIDTH,
     height: HEIGHT,
@@ -73,21 +83,20 @@ export const calculateEpisode01Metadata: CalculateMetadataFunction<
 
 export const Episode01: React.FC<Episode01Props> = ({ sceneDurations }) => {
   const { fps } = useVideoConfig();
-
   const children: React.ReactNode[] = [];
 
   EP01_SCENES.forEach((scene, index) => {
     if (index > 0) {
       children.push(
         <TransitionSeries.Transition
-          key={`transition-${scene.id}`}
+          key={`t-${scene.id}`}
           presentation={fade()}
           timing={linearTiming({ durationInFrames: TRANSITION_FRAMES })}
         />,
       );
     }
 
-    const durationInFrames = sceneDurations[index] ?? Math.round(4 * fps);
+    const durationInFrames = sceneDurations[index] ?? Math.round(5 * fps);
 
     children.push(
       <TransitionSeries.Sequence
@@ -101,13 +110,21 @@ export const Episode01: React.FC<Episode01Props> = ({ sceneDurations }) => {
         <Audio
           src="https://remotion.media/whoosh.wav"
           premountFor={fps}
-          volume={0.2}
+          volume={0.18}
         />
-        {scene.kind === "tip" ? (
+        {scene.stamp ? (
           <Audio
             src="https://remotion.media/ding.wav"
             premountFor={fps}
-            volume={0.32}
+            volume={0.28}
+            playbackRate={0.9}
+          />
+        ) : null}
+        {scene.kind === "choice" ? (
+          <Audio
+            src="https://remotion.media/mouse-click.wav"
+            premountFor={fps}
+            volume={0.35}
           />
         ) : null}
       </TransitionSeries.Sequence>,

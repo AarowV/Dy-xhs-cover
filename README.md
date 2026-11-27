@@ -8,7 +8,7 @@
 
 ## 高性价比人生指南 · 视频剧集（Remotion）
 
-`video/` 目录是用代码制作的竖屏短视频系列，第一集《不要早死》改编自开源项目 [eternity4719/HowToLiveBetter](https://github.com/eternity4719/HowToLiveBetter)（CC BY 4.0）。
+`video/` 用代码复刻抖音「白起」纪录片做法：横屏 16:9、宋体字幕、卷轴/朱印/计数器、文献脚注、结尾 A/B 选择题。第一集《不要早死》改编自 [eternity4719/HowToLiveBetter](https://github.com/eternity4719/HowToLiveBetter)（CC BY 4.0）。
 
 ```bash
 cd video

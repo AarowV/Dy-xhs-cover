@@ -7,7 +7,7 @@ import {
 import { EP01_SCENES } from "./script";
 import { FPS, HEIGHT, WIDTH } from "./theme";
 
-const defaultSceneDurations = EP01_SCENES.map(() => 4 * FPS);
+const defaultSceneDurations = EP01_SCENES.map(() => 5 * FPS);
 
 export const RemotionRoot: React.FC = () => {
   return (
