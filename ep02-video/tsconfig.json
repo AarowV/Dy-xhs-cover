@@ -8,9 +8,11 @@
     "noEmit": true,
     "lib": ["ES2022"],
     "esModuleInterop": true,
+    "resolveJsonModule": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "noUnusedLocals": true
   },
+  "include": ["src"],
   "exclude": ["remotion.config.ts"]
 }

@@ -2,7 +2,12 @@
 
 Remotion 竖屏短视频（1080×1920）：**不花一分钱，最能拉长健康寿命的 3 件事**
 
-风格参考 Iwanau：羊皮纸/酒红配色、字幕即旁白、天平/曲线/进度条数据动画、印章强调、结尾二选一互动。
+## 两个版本
+
+| Composition | 做法 |
+| --- | --- |
+| `Ep02Vibe` | **Vibe coding 主推**：Fal 生成插画 + 中文旁白 + BGM，Remotion 拼装字幕/Ken Burns/结尾 CTA |
+| `Ep02FreeLongevity` | 纯代码矢量信息图版（羊皮纸 UI、天平/曲线组件） |
 
 ## 本地预览
 
@@ -12,23 +17,17 @@ npm i
 npm run dev
 ```
 
-打开 Studio 后选择 composition `Ep02FreeLongevity`。
+Studio 里选 `Ep02Vibe`。
 
 ## 渲染
 
 ```bash
-npx remotion render Ep02FreeLongevity out/ep02-free-longevity.mp4
+npx remotion render Ep02Vibe out/ep02-vibe.mp4
 ```
 
-## 分镜结构
+## Vibe 资产
 
-| 时段 | 内容 |
-| --- | --- |
-| 0–16s | 钩子：千元抗衰 vs ¥0 三件事天平 |
-| 16–23s | 片头标题卡 |
-| 23–45s | 第一件：规律睡眠 |
-| 45–67s | 第二件：150 分钟运动收益曲线 |
-| 67–90s | 第三件：防晒 + 控烟酒盐 |
-| 90–115s | 收藏清单 + 二选一 CTA |
+`public/vibe/`：`hook/sleep/exercise/protect/summary/choice.png` + `vo.mp3` + `bgm.mp3`  
+时间轴与字幕：`src/vibe/timeline.json`
 
 口播与要点来自《高性价比人生短视频_10集完整剧本库》EP02。

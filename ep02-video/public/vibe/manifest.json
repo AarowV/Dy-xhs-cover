@@ -1,0 +1,34 @@
+{
+  "vo.mp3": {
+    "url": "https://v3b.fal.media/files/b/0ab43393/YwwVjPgpwVRFO-_U1nHAa_output.mp3",
+    "path": "vibe/vo.mp3"
+  },
+  "bgm.mp3": {
+    "url": "https://v3b.fal.media/files/b/0ab43393/L4-iW1QGc1BAXpTDH-SIn_music_generated.mp3",
+    "path": "vibe/bgm.mp3"
+  },
+  "hook.png": {
+    "url": "https://v3b.fal.media/files/b/0ab43392/zGvn6M_XaaUhhJeJnwmmD_MIoUi0M5.png",
+    "path": "vibe/hook.png"
+  },
+  "sleep.png": {
+    "url": "https://v3b.fal.media/files/b/0ab43392/yXWRHZje5QWLROmWlqOZV_x9wyvFQt.png",
+    "path": "vibe/sleep.png"
+  },
+  "exercise.png": {
+    "url": "https://v3b.fal.media/files/b/0ab43392/_rnxWpvstUB-neXuLF1tx_tAgo13Ju.png",
+    "path": "vibe/exercise.png"
+  },
+  "protect.png": {
+    "url": "https://v3b.fal.media/files/b/0ab43392/URteMx3fZ4lp3OipmQ7iJ_IDpmx8fB.png",
+    "path": "vibe/protect.png"
+  },
+  "summary.png": {
+    "url": "https://v3b.fal.media/files/b/0ab43392/vY0QviHAq88NoETcftKKB_Y0iWgLvG.png",
+    "path": "vibe/summary.png"
+  },
+  "choice.png": {
+    "url": "https://v3b.fal.media/files/b/0ab43392/AOF3YdbjTR7JhdI2j-7rd_LDLBYbZY.png",
+    "path": "vibe/choice.png"
+  }
+}
