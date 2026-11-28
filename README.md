@@ -6,6 +6,20 @@
 
 全部在你自己的电脑上完成：不登录、不上传、没有服务器。
 
+## 高性价比人生指南 · 视频剧集（Remotion）
+
+`video/` 用代码复刻抖音「白起」纪录片做法：横屏 16:9、宋体字幕、卷轴/朱印/计数器、文献脚注、结尾 A/B 选择题。第一集《不要早死》改编自 [eternity4719/HowToLiveBetter](https://github.com/eternity4719/HowToLiveBetter)（CC BY 4.0）。
+
+```bash
+cd video
+npm install
+npm run voiceover:ep01   # 可选：重新生成中文旁白
+npm run dev              # Remotion Studio 预览
+npm run render:ep01      # 导出 MP4
+```
+
+分镜与署名见 `video/SCRIPT_EP01.md`、`video/ATTRIBUTION.md`。
+
 ![编辑界面：左边改字，右边是实时预览](screenshots/ui.png)
 
 ## 两种尺寸
