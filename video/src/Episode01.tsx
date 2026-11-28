@@ -16,28 +16,36 @@ import {
   EbikeScene,
   HelmetScene,
   HookScene,
+  ListScene,
   MethodScene,
   SeatbeltScene,
+  SectionScene,
   SmokeScene,
+  TipScene,
   TitleScene,
 } from "./scenes/Scenes";
 import { FPS, HEIGHT, WIDTH } from "./theme";
 
-const TRANSITION_FRAMES = 14;
-const TAIL_PADDING_FRAMES = 12;
+const TRANSITION_FRAMES = 10;
+/** Keep narration fully clear of the next scene's crossfade. */
+const TAIL_PADDING_FRAMES = 22;
 
 export type Episode01Props = {
   sceneDurations: number[];
 };
 
 const renderScene = (scene: SceneData) => {
-  switch (scene.kind) {
+  switch (scene.visual) {
     case "hook":
       return <HookScene data={scene} />;
     case "title":
       return <TitleScene data={scene} />;
     case "method":
       return <MethodScene data={scene} />;
+    case "section":
+      return <SectionScene data={scene} />;
+    case "list":
+      return <ListScene data={scene} />;
     case "seatbelt":
       return <SeatbeltScene data={scene} />;
     case "helmet":
@@ -48,10 +56,12 @@ const renderScene = (scene: SceneData) => {
       return <EbikeScene data={scene} />;
     case "bp":
       return <BpScene data={scene} />;
+    case "tip":
+      return <TipScene data={scene} />;
     case "choice":
       return <ChoiceScene data={scene} />;
     default:
-      return null;
+      return <TipScene data={scene} />;
   }
 };
 
@@ -110,13 +120,13 @@ export const Episode01: React.FC<Episode01Props> = ({ sceneDurations }) => {
         <Audio
           src="https://remotion.media/whoosh.wav"
           premountFor={fps}
-          volume={0.18}
+          volume={0.14}
         />
         {scene.stamp ? (
           <Audio
             src="https://remotion.media/ding.wav"
             premountFor={fps}
-            volume={0.28}
+            volume={0.26}
             playbackRate={0.9}
           />
         ) : null}

@@ -516,3 +516,168 @@ export const ChoiceScene: React.FC<{ data: SceneData }> = ({ data }) => {
     </Shell>
   );
 };
+
+const SECTION_BG: Record<string, string> = {
+  路上: `linear-gradient(180deg, #243040 0%, #1A222C 100%)`,
+  家里: `linear-gradient(180deg, #3A2A28, #1B1414)`,
+  意外: `linear-gradient(180deg, #2B3340, #171C24)`,
+  疫苗: `radial-gradient(circle at 30% 20%, #3A4555, ${theme.night})`,
+  筛查: `radial-gradient(circle at 50% 20%, #3A4555, ${theme.night})`,
+  信号: `linear-gradient(180deg, #2A3038, #12161C)`,
+  心理: `linear-gradient(180deg, #2C2430, #141018)`,
+};
+
+export const SectionScene: React.FC<{ data: SceneData }> = ({ data }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const t = spring({ frame, fps, config: { damping: 200 } });
+  const bg = SECTION_BG[data.badge ?? ""] ?? SECTION_BG.路上;
+
+  return (
+    <Shell data={data}>
+      <AbsoluteFill style={{ background: bg }} />
+      <div
+        style={{
+          position: "absolute",
+          left: 120,
+          top: 280,
+          fontFamily: kaiFont,
+          fontSize: 120,
+          color: theme.ink,
+          opacity: t,
+          letterSpacing: "0.2em",
+          textShadow: "3px 3px 0 rgba(0,0,0,0.45)",
+        }}
+      >
+        {data.badge}
+      </div>
+      <div
+        style={{
+          position: "absolute",
+          left: 128,
+          top: 440,
+          width: 180,
+          height: 6,
+          background: theme.crimson,
+          scale: interpolate(t, [0, 1], [0.2, 1], { extrapolateRight: "clamp" }),
+          transformOrigin: "left center",
+        }}
+      />
+    </Shell>
+  );
+};
+
+export const TipScene: React.FC<{ data: SceneData }> = ({ data }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const value = useCountUp(data.counterTo ?? 0, 0.35);
+  const bg = SECTION_BG[data.badge?.split(" · ")[0] ?? ""] ?? theme.night;
+  const enter = spring({
+    frame: frame - Math.round(0.15 * fps),
+    fps,
+    config: { damping: 160 },
+  });
+
+  return (
+    <Shell
+      data={data}
+      counterValue={data.counterTo ? value : undefined}
+    >
+      <AbsoluteFill style={{ background: bg }} />
+      <PalaceBackdrop night />
+      <AbsoluteFill
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(20,24,32,0.35) 0%, rgba(20,24,32,0.72) 100%)",
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          left: 140,
+          top: 200,
+          maxWidth: 980,
+          fontFamily: kaiFont,
+          fontSize: 56,
+          lineHeight: 1.35,
+          color: theme.ink,
+          opacity: enter,
+          textShadow: "2px 2px 6px rgba(0,0,0,0.65)",
+        }}
+      >
+        {data.subtitle}
+      </div>
+      {data.stamp ? (
+        <div style={{ position: "absolute", right: 180, top: 240 }}>
+          <Stamp text={data.stamp} delay={Math.round(0.9 * fps)} />
+        </div>
+      ) : null}
+      <Silhouette x={1480} y={430} scale={1.2} robe="#3A322C" hat={false} />
+    </Shell>
+  );
+};
+
+export const ListScene: React.FC<{ data: SceneData }> = ({ data }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const items = data.listItems ?? [];
+  const bg = SECTION_BG[data.badge?.split(" · ")[0] ?? ""] ?? theme.night;
+
+  return (
+    <Shell data={data}>
+      <AbsoluteFill style={{ background: bg }} />
+      <div
+        style={{
+          position: "absolute",
+          left: 120,
+          top: 150,
+          right: 120,
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: "18px 48px",
+        }}
+      >
+        {items.map((item, i) => {
+          const t = spring({
+            frame: frame - Math.round((0.2 + i * 0.1) * fps),
+            fps,
+            config: { damping: 200 },
+          });
+          return (
+            <div
+              key={item.n}
+              style={{
+                display: "flex",
+                alignItems: "baseline",
+                gap: 16,
+                opacity: t,
+                translate: `0px ${interpolate(t, [0, 1], [16, 0])}px`,
+              }}
+            >
+              <span
+                style={{
+                  fontFamily: songFont,
+                  fontSize: 28,
+                  color: theme.crimson,
+                  minWidth: 48,
+                }}
+              >
+                {String(item.n).padStart(2, "0")}
+              </span>
+              <span
+                style={{
+                  fontFamily: songFont,
+                  fontSize: 34,
+                  color: theme.ink,
+                  lineHeight: 1.35,
+                }}
+              >
+                {item.title}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    </Shell>
+  );
+};
